@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
-
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.CvSink;
@@ -23,6 +22,8 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
@@ -41,14 +42,18 @@ public class Robot extends IterativeRobot {
   WPI_TalonSRX armOne = new WPI_TalonSRX(5);
   WPI_TalonSRX armTwo = new WPI_TalonSRX(6);
   WPI_VictorSPX intake = new WPI_VictorSPX(7);
-  boolean upButt;
-  boolean downButt;
-  boolean shootButt;
+  DoubleSolenoid hook = new DoubleSolenoid(7, 6);
+  Solenoid lift = new Solenoid(5);
   SpeedControllerGroup m_right = new SpeedControllerGroup(driveOne, driveThree);
   SpeedControllerGroup m_left = new SpeedControllerGroup(driveTwo, driveFour);
   SpeedController arm = new SpeedControllerGroup(armOne, armTwo);
   DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   private Joystick m_stick = new Joystick(0);
+  boolean upButt;
+  boolean downButt;
+  boolean shootButt;
+  boolean hookButt;
+  boolean liftButt;
   
   /**
    * This function is run when the robot is first started up and should be
@@ -142,7 +147,14 @@ public class Robot extends IterativeRobot {
     } else {
       intake.set(0);
     }
-
+    hookButt = m_stick.getRawButton(4);
+    if(hookButt){
+      hook.set(DoubleSolenoid.Value.kForward);
+    } else {
+      hook.set(DoubleSolenoid.Value.kReverse);
+    }
+    liftButt = m_stick.getRawButton(9);
+    lift.set(liftButt);
   }
 
   /**
