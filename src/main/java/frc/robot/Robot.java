@@ -43,7 +43,8 @@ public class Robot extends IterativeRobot {
   WPI_TalonSRX armTwo = new WPI_TalonSRX(6);
   WPI_VictorSPX intake = new WPI_VictorSPX(7);
   DoubleSolenoid hook = new DoubleSolenoid(7, 6);
-  Solenoid lift = new Solenoid(5);
+  Solenoid backLift = new Solenoid(5);
+  Solenoid frontLift = new Solenoid(0);
   SpeedControllerGroup m_right = new SpeedControllerGroup(driveOne, driveThree);
   SpeedControllerGroup m_left = new SpeedControllerGroup(driveTwo, driveFour);
   SpeedController arm = new SpeedControllerGroup(armOne, armTwo);
@@ -52,8 +53,10 @@ public class Robot extends IterativeRobot {
   boolean upButt;
   boolean downButt;
   boolean shootButt;
+  boolean intakeButt;
   boolean hookButt;
-  boolean liftButt;
+  boolean backLiftButt;
+  boolean frontLiftButt;
   
   /**
    * This function is run when the robot is first started up and should be
@@ -133,6 +136,7 @@ public class Robot extends IterativeRobot {
     upButt = m_stick.getRawButton(5);
     downButt = m_stick.getRawButton(3);
     shootButt = m_stick.getRawButton(1);
+    intakeButt = m_stick.getRawButton(2);
     if(upButt){
       arm.set(0.5);
     } else {
@@ -143,9 +147,13 @@ public class Robot extends IterativeRobot {
       }
     }
     if(shootButt){
-      intake.set(0.8);
+      intake.set(0.5);
     } else {
-      intake.set(0);
+      if(intakeButt){
+        intake.set(-0.5);
+      } else {
+        intake.set(0);
+      }
     }
     hookButt = m_stick.getRawButton(4);
     if(hookButt){
@@ -153,8 +161,10 @@ public class Robot extends IterativeRobot {
     } else {
       hook.set(DoubleSolenoid.Value.kReverse);
     }
-    liftButt = m_stick.getRawButton(9);
-    lift.set(liftButt);
+    backLiftButt = m_stick.getRawButton(9);
+    frontLiftButt = m_stick.getRawButton(7);
+    backLift.set(backLiftButt);
+    frontLift.set(frontLiftButt);
   }
 
   /**
