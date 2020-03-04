@@ -8,18 +8,14 @@
 package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.CvSource;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.cameraserver.CameraServer;
@@ -57,7 +53,7 @@ public class Robot extends TimedRobot {
   DifferentialDrive m_drive = new DifferentialDrive(m_left, m_right);
   //Create joystick object
   private Joystick m_stick = new Joystick(0);
-  private Joystick weeb = new Joystick(1);
+  private Joystick joystick = new Joystick(1);
   
   /**
    * This function is run when the robot is first started up and should be
@@ -141,10 +137,10 @@ public class Robot extends TimedRobot {
     double yStick = m_stick.getY() * 0.5;
     double xStick = m_stick.getX() * 0.5;
     m_drive.arcadeDrive(yStick, xStick);
-    boolean upButt = weeb.getRawButton(3);
-    boolean downButt = weeb.getRawButton(4);
-    boolean fastDown = weeb.getRawButton(6);
-    boolean rocket = weeb.getRawButton(1);
+    boolean upButt = joystick.getRawButton(3);
+    boolean downButt = joystick.getRawButton(4);
+    boolean fastDown = joystick.getRawButton(6);
+    boolean rocket = joystick.getRawButton(1);
     boolean shootButt = m_stick.getRawButton(1);
     boolean intakeButt = m_stick.getRawButton(2);
     //Arm commands
@@ -199,11 +195,11 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     //Fetch joystick and button values
     m_drive.arcadeDrive(m_stick.getY(), m_stick.getX());
-    boolean upButt = weeb.getRawButton(3);
-    boolean downButt = weeb.getRawButton(4);
-    boolean fastDown = weeb.getRawButton(5);
-    boolean fastUp = weeb.getRawButton(6);
-    boolean rocket = weeb.getRawButton(1);
+    boolean upButt = joystick.getRawButton(3);
+    boolean downButt = joystick.getRawButton(4);
+    boolean fastDown = joystick.getRawButton(5);
+    boolean fastUp = joystick.getRawButton(6);
+    boolean rocket = joystick.getRawButton(1);
     boolean shootButt = m_stick.getRawButton(1);
     boolean intakeButt = m_stick.getRawButton(2);
     //Arm commands
